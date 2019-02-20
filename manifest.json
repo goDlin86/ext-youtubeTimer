@@ -1,0 +1,19 @@
+{
+    "manifest_version": 2,
+  
+    "name": "youtubeTimer",
+    "description": "Youtube Timer",
+    "version": "1.0",
+
+    "browser_action": {
+        "default_title": "Show timer",
+        "default_popup": "popup.html"
+    },
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+    },
+
+    "permissions": ["tabs", "storage"]
+}
