@@ -9,7 +9,7 @@ Date.prototype.yyyymmdd = function() {
 }
 
 
-var timer, 
+let timer, 
     tabIds = [],
     store = [],
     index = -1
@@ -37,24 +37,24 @@ chrome.browserAction.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
 // }, {url: [{urlMatches : 'https://www.youtube.com/'}]})
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if(changeInfo.status == "complete") {
+    if (changeInfo.status == "complete") {
         if (tab.active) {
-            if(tab.url.startsWith("https://www.youtube.com")) {
-                if(!tabIds.includes(tabId)) {
+            if (tab.url.startsWith("https://www.youtube.com")) {
+                if (!tabIds.includes(tabId)) {
                     startTimer(tabId)
                 }
             } else {
-                if(tabIds.includes(tabId)) {
+                if (tabIds.includes(tabId)) {
                     stopTimer(tabId)
                 }
             }
         } else {
-            if(tab.url.startsWith("https://www.youtube.com")) {
-                if(!tabIds.includes(tabId)) {
+            if (tab.url.startsWith("https://www.youtube.com")) {
+                if (!tabIds.includes(tabId)) {
                     tabIds.push(tabId)
                 }
             } else {
-                if(tabIds.includes(tabId)) {
+                if (tabIds.includes(tabId)) {
                     tabIds.filter((id) => id != tabId)
                 }
             }
