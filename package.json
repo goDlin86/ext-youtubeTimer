@@ -1,0 +1,28 @@
+{
+  "name": "youtubetimer",
+  "version": "1.0.0",
+  "description": "Youtube timer",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goDlin86/ext-youtubeTimer.git"
+  },
+  "keywords": [
+    "yotube",
+    "timer",
+    "chrome",
+    "extension"
+  ],
+  "author": "goDlin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/goDlin86/ext-youtubeTimer/issues"
+  },
+  "homepage": "https://github.com/goDlin86/ext-youtubeTimer#readme",
+  "dependencies": {
+    "moment": "^2.24.0"
+  }
+}
