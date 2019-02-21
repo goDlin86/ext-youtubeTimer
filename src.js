@@ -1,14 +1,9 @@
-Date.prototype.yyyymmdd = function() {
-    var mm = this.getMonth() + 1
-    var dd = this.getDate()
-  
-    return [this.getFullYear(),
-            (mm>9 ? '' : '0') + mm,
-            (dd>9 ? '' : '0') + dd
-           ].join('-')
-}
+import moment from 'moment'
+import 'moment/locale/ru'
 
-toHHMMSS = (sec) => {
+moment.locale('ru')
+
+function toHHMMSS(sec) {
     var hours   = Math.floor(sec / 3600)
     var minutes = Math.floor((sec - (hours * 3600)) / 60)
     var seconds = sec - (hours * 3600) - (minutes * 60)
@@ -19,7 +14,7 @@ toHHMMSS = (sec) => {
     return r
 }
 
-const day = new Date()
+const day = moment()
 
 var store = [],
     index = -1
@@ -29,9 +24,9 @@ chrome.storage.sync.get('store', (data) => {
         store = data.store
     }
 
-    index = store.findIndex(obj => obj.date === day.yyyymmdd())
+    index = store.findIndex(obj => obj.date === day.format("YYYY-MM-DD"))
     if (index === -1) {
-        store.push({ timer: 0, date: day.yyyymmdd() })
+        store.push({ timer: 0, date: day.format("YYYY-MM-DD") })
         index = store.length - 1
     }
 
