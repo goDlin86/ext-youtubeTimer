@@ -9,7 +9,7 @@ Date.prototype.yyyymmdd = function() {
 }
 
 
-let timer, 
+let startTime, 
     tabIds = [],
     store = [],
     index = -1
@@ -82,14 +82,16 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 
 startTimer = (tabId) => {
     chrome.browserAction.setBadgeBackgroundColor({ color: [230, 10, 10, 230] })
-    clearInterval(timer)
-    timer = setInterval(() => store[index].timer++, 1000)
+    startTime = new Date()
 }
 
 
 stopTimer = (tabId) => {
-    chrome.browserAction.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
-    clearInterval(timer)
-    tabIds = tabIds.filter((id) => id != tabId)
-    chrome.storage.sync.set({ store })
+    if (startTime) {
+        chrome.browserAction.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
+        store[index].timer += (new Date().getTime() - startTime.getTime()) / 1000
+        startTime = null
+        tabIds = tabIds.filter((id) => id != tabId)
+        chrome.storage.sync.set({ store })
+    }
 }
