@@ -6,7 +6,7 @@ const concat = require('gulp-concat')
 function js() {
   return src('src.js')
     .pipe(browserify({
-      insertGlobals: true, 
+      //insertGlobals: true, 
       debug: true,
       transform: [babelify.configure({
         presets: ['@babel/env']

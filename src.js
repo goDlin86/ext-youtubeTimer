@@ -62,7 +62,7 @@ chrome.storage.sync.get('store', (data) => {
             time += '<span class="minutes">' + dur.minutes() + "</span>" + 'м '
             time += '<span class="seconds">' + dur.seconds() + "</span>" + 'с'
 
-            timer += "<div>" + day + " - " + time + "</div>"
+            timer += '<div><span class="day">' + day + '</span> - ' + time + '</div>'
         }    
     }
 

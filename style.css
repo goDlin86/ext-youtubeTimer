@@ -12,6 +12,9 @@ body {
 #timer > div > span {
     font-weight: bold;
 }
+span.day {
+    color: #888;
+}
 span.hours {
     font-size: 2em;
     color: #666;
