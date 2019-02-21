@@ -2,21 +2,38 @@ import moment from 'moment'
 import 'moment/locale/ru'
 
 moment.locale('ru')
-
-function toHHMMSS(sec) {
-    var hours   = Math.floor(sec / 3600)
-    var minutes = Math.floor((sec - (hours * 3600)) / 60)
-    var seconds = sec - (hours * 3600) - (minutes * 60)
-
-    var r = ""
-    if (hours > 0) r += hours + "h "
-    r += minutes + "m " + seconds + "s"
-    return r
-}
+moment.updateLocale('ru', {
+    calendar : {
+        lastDay : 'Вчера',
+        sameDay : 'Сегодня',
+        lastWeek: function (now) {
+            if (now.week() !== this.week()) {
+                switch (this.day()) {
+                    case 0:
+                        return '[В прошлое] dddd'
+                    case 1:
+                    case 2:
+                    case 4:
+                        return '[В прошлый] dddd'
+                    case 3:
+                    case 5:
+                    case 6:
+                        return '[В прошлую] dddd'
+                }
+            } else {
+                if (this.day() === 2) {
+                    return '[Во] dddd'
+                } else {
+                    return '[В] dddd'
+                }
+            }
+        }
+    }
+})
 
 const day = moment()
 
-var store = [],
+let store = [],
     index = -1
 
 chrome.storage.sync.get('store', (data) => {
@@ -30,11 +47,23 @@ chrome.storage.sync.get('store', (data) => {
         index = store.length - 1
     }
 
-    var timer = ""
-    for (var i = 1; i < 8; i++) {
-        var k = store.length - i
-        if (k > -1)
-            timer += "<div>" + store[k].date + " - " + toHHMMSS(store[k].timer) + "</div>"
+    let timer = ""
+    for (let i = 1; i < 8; i++) {
+        let k = store.length - i
+
+        if (k > -1) {
+            //const day = moment(store[k].date).format('ddd, D MMM')
+            const day = moment(store[k].date).calendar()
+
+            const dur = moment.duration(store[k].timer, 'seconds')
+            let time = ''
+            if (dur.hours() > 0)
+                time += '<span class="hours">' + dur.hours() + "</span>" + 'ч '
+            time += '<span class="minutes">' + dur.minutes() + "</span>" + 'м '
+            time += '<span class="seconds">' + dur.seconds() + "</span>" + 'с'
+
+            timer += "<div>" + day + " - " + time + "</div>"
+        }    
     }
 
     document.getElementById("timer").innerHTML = timer

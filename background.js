@@ -42,6 +42,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             if (tab.url.startsWith("https://www.youtube.com")) {
                 if (!tabIds.includes(tabId)) {
                     startTimer(tabId)
+                    tabIds.push(tabId)
                 }
             } else {
                 if (tabIds.includes(tabId)) {
@@ -83,7 +84,6 @@ startTimer = (tabId) => {
     chrome.browserAction.setBadgeBackgroundColor({ color: [230, 10, 10, 230] })
     clearInterval(timer)
     timer = setInterval(() => store[index].timer++, 1000)
-    tabIds.push(tabId)
 }
 
 

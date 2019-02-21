@@ -1,55 +1,26 @@
 body {
     font-size: 1em;
-    color: #666;
+    color: #aaa;
     margin: 20px;
     width: 300px;
 }
 
-.channels {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-column-gap: 20px;
-    margin-bottom: 20px;
+
+#timer > div {
+    padding: 0 10px;
 }
-.channels > div {
-    padding: 5px 10px;
+#timer > div > span {
     font-weight: bold;
 }
-
-.schedule {
-    max-height: 340px;
-    overflow: scroll;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-column-gap: 20px;
-    font-size: 0.85em;
-}
-.item {
-    display: block;
-    margin: 10px 0;
-    text-decoration: none;
+span.hours {
+    font-size: 2em;
     color: #666;
 }
-.item:hover {
-    text-decoration: underline;
+span.minutes {
+    font-size: 1.75em;
+    color: #777;
 }
-.item > .time, .item > .cur {
-    font-weight: bold;
-}
-
-.days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-column-gap: 20px;
-    margin-bottom: 20px;
-}
-.days > div {
-    padding: 5px;
-    text-align: center;
-    cursor: pointer;
-    transition: color 0.2s ease-in;
-    color: rgba(200, 200, 200, 0.55);
-}
-.days > div:hover, .days > div.active {
-    color: rgba(100, 100, 100, 1);
+span.seconds {
+    font-size: 1.4em;
+    color: #888;
 }
