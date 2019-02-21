@@ -90,6 +90,6 @@ startTimer = (tabId) => {
 stopTimer = (tabId) => {
     chrome.browserAction.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
     clearInterval(timer)
-    tabIds.filter((id) => id != tabId)
+    tabIds = tabIds.filter((id) => id != tabId)
     chrome.storage.sync.set({ store })
 }
