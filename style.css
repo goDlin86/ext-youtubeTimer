@@ -6,10 +6,20 @@ body {
 }
 
 
-#timer > div {
-    padding: 0 10px;
+#timer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
 }
-#timer > div > span {
+#timer > div {
+    padding: 10px;
+}
+#timer > .day.today, #timer > .time.today {
+    background-color: #eee;
+}
+
+
+#timer > span {
     font-weight: bold;
 }
 span.day {
