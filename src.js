@@ -3,21 +3,6 @@ import 'moment/locale/ru'
 
 moment.locale('ru')
 
-
-
-const startWeek = moment().startOf('week').subtract(1, 'd')
-
-let daysWeek = []
-for (let i = 0; i < 7; i++) {
-    const d = startWeek.add(1, 'd')
-    daysWeek.push(d.format("YYYY-MM-DD"))
-    document.getElementById("timer").innerHTML += "<div class='day'>" + d.format('dddd') + '<br/>' + d.format('D MMM') + "</div>"
-    document.getElementById("timer").innerHTML += "<div class='time'></div>"
-}
-
-
-
-
 let store = [], index = -1
 
 chrome.storage.sync.get('store', (data) => {
@@ -31,7 +16,26 @@ chrome.storage.sync.get('store', (data) => {
         index = store.length - 1
     }
 
+    showWeekTimes()
+})
 
+let startWeek = moment().startOf('week').subtract(1, 'd')
+let daysWeek = []
+showWeekDays()
+
+function showWeekDays() {
+    daysWeek = []
+    for (let i = 0; i < 7; i++) {
+        const d = startWeek.add(1, 'd')
+        daysWeek.push(d.format("YYYY-MM-DD"))
+        document.getElementById("timer").innerHTML += "<div class='day'>" + d.format('dddd') + '<br/>' + d.format('D MMM') + "</div>"
+        document.getElementById("timer").innerHTML += "<div class='time'></div>"
+    }
+}
+
+
+
+function showWeekTimes() {
     for (let i = 0; i < 7; i++) {
         let k = store.findIndex(obj => obj.date === daysWeek[i])
 
@@ -51,5 +55,13 @@ chrome.storage.sync.get('store', (data) => {
             }
         }    
     }
-})
+}
 
+
+
+document.getElementsByClassName('prev')[0].addEventListener('click', (e) => {
+    document.getElementById("timer").innerHTML = ''
+    startWeek = moment(daysWeek[0]).subtract(8, 'd')
+    showWeekDays()
+    showWeekTimes()
+})

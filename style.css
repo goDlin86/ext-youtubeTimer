@@ -37,3 +37,15 @@ span.seconds {
     font-size: 1.4em;
     color: #888;
 }
+
+
+.prev {
+    text-align: center;
+    padding: 10px;
+    color: #aaa;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+}
+.prev:hover {
+    color: #777;
+}
