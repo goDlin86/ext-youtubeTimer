@@ -28,9 +28,11 @@ class Timer {
         })
 
         document.getElementsByClassName('prev')[0].addEventListener('click', (e) => {
-            this.prevWeek()
+            this.changeWeek(-7)
         })
-
+        document.getElementsByClassName('next')[0].addEventListener('click', (e) => {
+            this.changeWeek(7)
+        })
     }
 
     showWeekDays() {
@@ -64,9 +66,9 @@ class Timer {
         }
     }
 
-    prevWeek() {
+    changeWeek(d) {
         this.timer.innerHTML = ''
-        this.startWeek.subtract(7, 'd')
+        this.startWeek.add(d, 'd')
         this.daysWeek = []
         this.showWeekDays()
         this.showWeekTimes()
