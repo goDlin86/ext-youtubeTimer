@@ -78,11 +78,18 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 })
 
 
+chrome.extension.onConnect.addListener((port) => {
+    port.onMessage.addListener((msg) => {
+        port.postMessage((startTime) ? startTime.getTime() : null)
+    })
+})
+
+
 
 
 startTimer = (tabId) => {
     chrome.browserAction.setBadgeBackgroundColor({ color: [230, 10, 10, 230] })
-    startTime = new Date()
+    startTime = new Date()    
 }
 
 
