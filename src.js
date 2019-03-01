@@ -6,7 +6,7 @@ moment.locale('ru')
 
 class Timer {
     constructor() {
-        this.timer = document.getElementById('timer')
+        this.timerEl = document.getElementById('timer')
         this.today = moment().format("YYYY-MM-DD")
         this.startWeek = moment().startOf('week')
         this.currentWeekTime = 0
@@ -41,12 +41,12 @@ class Timer {
         for (let i = 0; i < 7; i++) {
             const d = this.startWeek.clone().add(i, 'd')
             this.daysWeek.push(d.format("YYYY-MM-DD"))
-            this.timer.innerHTML += "<div class='day'>" + d.format('dddd') + '<br/>' + d.format('D MMM') + "</div>"
-            this.timer.innerHTML += "<div class='time'></div>"
+            this.timerEl.innerHTML += "<div class='day'>" + d.format('dddd') + '<br/>' + d.format('D MMM') + "</div>"
+            this.timerEl.innerHTML += "<div class='time'></div>"
         }
 
-        this.timer.innerHTML += "<div class='allday'>Всего</div>"
-        this.timer.innerHTML += "<div class='time'></div>"
+        this.timerEl.innerHTML += "<div class='allday'>Всего</div>"
+        this.timerEl.innerHTML += "<div class='time'></div>"
     }
 
     showWeekTimes() {
@@ -75,7 +75,12 @@ class Timer {
     }
 
     showTime(dur, i, timer = false) {
-        if (timer) dur = this.timerDur.add(1, 's')
+        if (timer) {
+            dur = this.timerDur.add(1, 's')
+
+            this.timerDurWeek.add(1, 's')
+            this.showTime(this.timerDurWeek, 7)
+        }
 
         let time = ''
         if (dur.hours() > 0)
@@ -104,13 +109,19 @@ class Timer {
         this.timerDur = dur.add((new Date().getTime() - this.startTime) / 1000, 's')
         this.timerI = moment().weekday()
 
-        this.showTime(dur, this.timerI)
+        //time for all week
+        const durWeek = moment.duration(this.currentWeekTime, 'seconds')
+        this.timerDurWeek = durWeek.add((new Date().getTime() - this.startTime) / 1000, 's')
+
+        this.showTime(this.timerDur, this.timerI)
+        this.showTime(this.timerDurWeek, 7)
         this.timerInterval = setInterval(this.showTime.bind(this, this.timerDur, this.timerI, true), 1000)
     }
 
     changeWeek(d) {
         clearInterval(this.timerInterval)
-        this.timer.innerHTML = ''
+        clearInterval(this.timerIntervalWeek)
+        this.timerEl.innerHTML = ''
         this.startWeek.add(d, 'd')
         this.daysWeek = []
         this.showWeekDays()
