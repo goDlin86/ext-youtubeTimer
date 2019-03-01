@@ -9,6 +9,7 @@ class Timer {
         this.timer = document.getElementById('timer')
         this.today = moment().format("YYYY-MM-DD")
         this.startWeek = moment().startOf('week')
+        this.currentWeekTime = 0
         this.store = []
 
         this.daysWeek = []
@@ -43,13 +44,19 @@ class Timer {
             this.timer.innerHTML += "<div class='day'>" + d.format('dddd') + '<br/>' + d.format('D MMM') + "</div>"
             this.timer.innerHTML += "<div class='time'></div>"
         }
+
+        this.timer.innerHTML += "<div class='allday'>Всего</div>"
+        this.timer.innerHTML += "<div class='time'></div>"
     }
 
     showWeekTimes() {
+        this.currentWeekTime = 0
         for (let i = 0; i < 7; i++) {
             let k = this.store.findIndex(obj => obj.date === this.daysWeek[i])
     
             if (k > -1) {
+                this.currentWeekTime += this.store[k].timer
+
                 const dur = moment.duration(this.store[k].timer, 'seconds')
                 this.showTime(dur, i)
                 
@@ -62,6 +69,9 @@ class Timer {
                 }
             }    
         }
+
+        const dur = moment.duration(this.currentWeekTime, 'seconds')
+        this.showTime(dur, 7)
     }
 
     showTime(dur, i, timer = false) {
@@ -95,7 +105,7 @@ class Timer {
         this.timerI = moment().weekday()
 
         this.showTime(dur, this.timerI)
-        this.timerInterval = setInterval(this.showTime.bind(this), 1000, this.timerDur, this.timerI, true)
+        this.timerInterval = setInterval(this.showTime.bind(this, this.timerDur, this.timerI, true), 1000)
     }
 
     changeWeek(d) {

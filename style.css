@@ -17,13 +17,13 @@ body {
 #timer > .day.today, #timer > .time.today {
     background-color: #eee;
 }
+#timer > .allday {
+    font-size: 1.9em;
+}
 
 
 #timer > span {
     font-weight: bold;
-}
-span.day {
-    color: #888;
 }
 span.hours {
     font-size: 1.9em;
