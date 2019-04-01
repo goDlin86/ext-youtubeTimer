@@ -26,6 +26,8 @@ chrome.storage.sync.get('store', (data) => {
     if (index === -1) {
         store.push({ timer: 0, date: day.yyyymmdd() })
         index = store.length - 1
+
+        chrome.storage.sync.set({ store })
     }
 })
 
@@ -33,8 +35,6 @@ chrome.browserAction.setBadgeText({ text: " " })
 chrome.browserAction.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
 
 
-// chrome.webNavigation.onCompleted.addListener((tab) => {
-// }, {url: [{urlMatches : 'https://www.youtube.com/'}]})
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.status == "complete") {

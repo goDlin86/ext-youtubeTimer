@@ -8,7 +8,7 @@ body {
 
 #timer {
     display: grid;
-    grid-template-columns: 140px 1fr;
+    grid-template-columns: 120px 1fr;
     
 }
 #timer > div {
@@ -22,19 +22,20 @@ body {
 }
 
 
+.time {
+    font-size: 1.9em;
+    color: black;
+}
 #timer > span {
     font-weight: bold;
 }
 span.hours {
-    font-size: 1.9em;
     color: #666;
 }
 span.minutes {
-    font-size: 1.75em;
     color: #777;
 }
 span.seconds {
-    font-size: 1.4em;
     color: #888;
 }
 

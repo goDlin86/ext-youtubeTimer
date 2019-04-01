@@ -20,11 +20,6 @@ class Timer {
                 this.store = data.store
             }
         
-            const index = this.store.findIndex(obj => obj.date === this.today)
-            if (index === -1) {
-                this.store.push({ timer: 0, date: this.today })
-            }
-        
             this.showWeekTimes()
             this.connect()
         })
@@ -76,17 +71,16 @@ class Timer {
 
     showTime(dur, i, timer = false) {
         if (timer) {
-            dur = this.timerDur.add(1, 's')
-
             this.timerDurWeek.add(1, 's')
             this.showTime(this.timerDurWeek, 7)
+
+            dur = this.timerDur.add(1, 's')
         }
 
         let time = ''
-        if (dur.hours() > 0)
-            time += '<span class="hours">' + dur.hours() + "</span>" + 'ч '
-        time += '<span class="minutes">' + dur.minutes() + "</span>" + 'м '
-        time += '<span class="seconds">' + dur.seconds() + "</span>" + 'с'
+        time += '<span class="hours">' + (dur.hours() < 10 ? '0' : '') + dur.hours() + "</span>" + ' : '
+        time += '<span class="minutes">' + (dur.minutes() < 10 ? '0' : '') + dur.minutes() + "</span>" + ' : '
+        time += '<span class="seconds">' + (dur.seconds() < 10 ? '0' : '') + dur.seconds() + "</span>"
 
         document.getElementsByClassName('time')[i].innerHTML = time
     }
