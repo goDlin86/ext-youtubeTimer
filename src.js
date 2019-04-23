@@ -62,7 +62,12 @@ class Timer {
 
                     if (this.startTime) this.startTimer()
                 }
-            }    
+            } else if (this.today === this.daysWeek[i]) {
+                document.getElementsByClassName('day')[i].classList.add('today')
+                document.getElementsByClassName('time')[i].classList.add('today')
+
+                if (this.startTime) this.startTimer()
+            }
         }
 
         const dur = moment.duration(this.currentWeekTime, 'seconds')
@@ -98,7 +103,7 @@ class Timer {
 
     startTimer() {
         const d = this.store.find((obj) => obj.date === this.today)
-        const dur = moment.duration(d.timer, 'seconds')
+        const dur = moment.duration(d.timer || 0, 'seconds')
 
         this.timerDur = dur.add((new Date().getTime() - this.startTime) / 1000, 's')
         this.timerI = moment().weekday()
@@ -114,7 +119,6 @@ class Timer {
 
     changeWeek(d) {
         clearInterval(this.timerInterval)
-        clearInterval(this.timerIntervalWeek)
         this.timerEl.innerHTML = ''
         this.startWeek.add(d, 'd')
         this.daysWeek = []
