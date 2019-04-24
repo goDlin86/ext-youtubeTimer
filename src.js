@@ -103,7 +103,8 @@ class Timer {
 
     startTimer() {
         const d = this.store.find((obj) => obj.date === this.today)
-        const dur = moment.duration(d.timer || 0, 'seconds')
+        const time = d === undefined ? 0 : d.timer
+        const dur = moment.duration(time, 'seconds')
 
         this.timerDur = dur.add((new Date().getTime() - this.startTime) / 1000, 's')
         this.timerI = moment().weekday()
