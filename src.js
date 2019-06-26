@@ -59,35 +59,69 @@ class Timer {
                 if (this.today === this.store[k].date) {
                     document.getElementsByClassName('day')[i].classList.add('today')
                     document.getElementsByClassName('time')[i].classList.add('today')
-
-                    if (this.startTime) this.startTimer()
                 }
             } else if (this.today === this.daysWeek[i]) {
                 document.getElementsByClassName('day')[i].classList.add('today')
                 document.getElementsByClassName('time')[i].classList.add('today')
-
-                if (this.startTime) this.startTimer()
             }
         }
 
         const dur = moment.duration(this.currentWeekTime, 'seconds')
         this.showTime(dur, 7)
+
+        if (this.startTime && document.getElementsByClassName('today')[0]) 
+            this.startTimer()
     }
 
     showTime(dur, i, timer = false) {
-        if (timer) {
-            this.timerDurWeek.add(1, 's')
-            this.showTime(this.timerDurWeek, 7)
+        // if (timer) {
+        //     this.timerDurWeek.add(1, 's')
+        //     this.showTime(this.timerDurWeek, 7)
 
-            dur = this.timerDur.add(1, 's')
+        //     dur = this.timerDur.add(1, 's')
+        // }
+
+        // let time = ''
+        // time += '<span class="hours">' + (dur.hours() < 10 ? '0' : '') + dur.hours() + "</span>" + ' : '
+        // time += '<span class="minutes">' + (dur.minutes() < 10 ? '0' : '') + dur.minutes() + "</span>" + ' : '
+        // time += '<span class="seconds">' + (dur.seconds() < 10 ? '0' : '') + dur.seconds() + "</span>"
+
+        // document.getElementsByClassName('time')[i].innerHTML = time
+
+
+
+        let digits = [
+            Math.floor((dur.hours() / 10) % 10),
+            dur.hours() % 10,
+            Math.floor((dur.minutes() / 10) % 10),
+            dur.minutes() % 10,
+            Math.floor((dur.seconds() / 10) % 10),
+            dur.seconds() % 10
+        ]
+        
+        let clock = '<div class="clock ' + (timer ? 'anim' : '') + '">'
+        clock += '<div class="digit hoursTen">' + this.timerDigits(digits[0], 6) + '</div>'
+        clock += '<div class="digit hours">' + this.timerDigits(digits[1], 10) + '</div>'
+        clock += '<div>:</div>'
+        clock += '<div class="digit minsTen" style="animation-delay:-' + (dur.seconds() + digits[3] * 60) + 's">' + this.timerDigits(digits[2], 6) + '</div>'
+        clock += '<div class="digit mins" style="animation-delay:-' + dur.seconds() + 's">' + this.timerDigits(digits[3], 10) + '</div>'
+        clock += '<div>:</div>'
+        clock += '<div class="digit secsTen" style="animation-delay:-' + digits[5] + 's">' + this.timerDigits(digits[4], 6) + '</div>'
+        clock += '<div class="digit secs">' + this.timerDigits(digits[5], 10) + '</div>'
+
+        document.getElementsByClassName('time')[i].innerHTML = clock
+    }
+
+    timerDigits(first, count) {
+        let digits = ''
+
+        for (let i = 0; i < count; i++) {
+            let digit = i + first
+            if (digit >= count) digit -= count
+            digits += '<div>' + digit + '</div>'
         }
 
-        let time = ''
-        time += '<span class="hours">' + (dur.hours() < 10 ? '0' : '') + dur.hours() + "</span>" + ' : '
-        time += '<span class="minutes">' + (dur.minutes() < 10 ? '0' : '') + dur.minutes() + "</span>" + ' : '
-        time += '<span class="seconds">' + (dur.seconds() < 10 ? '0' : '') + dur.seconds() + "</span>"
-
-        document.getElementsByClassName('time')[i].innerHTML = time
+        return digits
     }
 
     connect() {
@@ -113,9 +147,9 @@ class Timer {
         const durWeek = moment.duration(this.currentWeekTime, 'seconds')
         this.timerDurWeek = durWeek.add((new Date().getTime() - this.startTime) / 1000, 's')
 
-        this.showTime(this.timerDur, this.timerI)
-        this.showTime(this.timerDurWeek, 7)
-        this.timerInterval = setInterval(this.showTime.bind(this, this.timerDur, this.timerI, true), 1000)
+        this.showTime(this.timerDur, this.timerI, true)
+        this.showTime(this.timerDurWeek, 7, true)
+        //this.timerInterval = setInterval(this.showTime.bind(this, this.timerDur, this.timerI, true), 1000)
     }
 
     changeWeek(d) {

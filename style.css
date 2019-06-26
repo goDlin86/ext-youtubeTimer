@@ -24,7 +24,7 @@ body {
 
 .time {
     font-size: 1.9em;
-    color: black;
+    color: #444;
 }
 #timer > span {
     font-weight: bold;
@@ -55,4 +55,45 @@ span.seconds {
 .prev:hover, .next:hover {
     color: #555;
     background-color: #eee;
+}
+
+
+
+.clock {
+    position: relative;
+    display: grid;
+    grid-template-columns: 24px 24px 8px 24px 24px 8px 24px 24px;
+    text-align: center;
+    overflow: hidden;
+    height: 35px;
+}
+.clock > .digit {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.clock.anim > .secs {
+    animation: timer infinite 10s steps(10);
+}
+.clock.anim > .secsTen {
+    animation: timer infinite 60s steps(6);
+}
+.clock.anim > .mins {
+    animation: timer infinite 600s steps(10);
+}
+.clock.anim > .minsTen {
+    animation: timer infinite 3600s steps(6);
+}
+.clock.anim > .hours {
+    animation: timer infinite 36000s steps(10);
+}
+.clock.anim > .hoursTen {
+    animation: timer infinite 216000s steps(6);
+}
+
+
+@keyframes timer {
+    from { top: 0; }
+    to { top: -350px; }
 }
