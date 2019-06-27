@@ -74,22 +74,6 @@ class Timer {
     }
 
     showTime(dur, i, timer = false) {
-        // if (timer) {
-        //     this.timerDurWeek.add(1, 's')
-        //     this.showTime(this.timerDurWeek, 7)
-
-        //     dur = this.timerDur.add(1, 's')
-        // }
-
-        // let time = ''
-        // time += '<span class="hours">' + (dur.hours() < 10 ? '0' : '') + dur.hours() + "</span>" + ' : '
-        // time += '<span class="minutes">' + (dur.minutes() < 10 ? '0' : '') + dur.minutes() + "</span>" + ' : '
-        // time += '<span class="seconds">' + (dur.seconds() < 10 ? '0' : '') + dur.seconds() + "</span>"
-
-        // document.getElementsByClassName('time')[i].innerHTML = time
-
-
-
         let digits = [
             Math.floor((dur.hours() / 10) % 10),
             dur.hours() % 10,
@@ -98,16 +82,29 @@ class Timer {
             Math.floor((dur.seconds() / 10) % 10),
             dur.seconds() % 10
         ]
-        
-        let clock = '<div class="clock ' + (timer ? 'anim' : '') + '">'
-        clock += '<div class="digit hoursTen">' + this.timerDigits(digits[0], 6) + '</div>'
-        clock += '<div class="digit hours">' + this.timerDigits(digits[1], 10) + '</div>'
-        clock += '<div>:</div>'
-        clock += '<div class="digit minsTen" style="animation-delay:-' + (dur.seconds() + digits[3] * 60) + 's">' + this.timerDigits(digits[2], 6) + '</div>'
-        clock += '<div class="digit mins" style="animation-delay:-' + dur.seconds() + 's">' + this.timerDigits(digits[3], 10) + '</div>'
-        clock += '<div>:</div>'
-        clock += '<div class="digit secsTen" style="animation-delay:-' + digits[5] + 's">' + this.timerDigits(digits[4], 6) + '</div>'
-        clock += '<div class="digit secs">' + this.timerDigits(digits[5], 10) + '</div>'
+
+        let clock = ''
+        if (timer) {
+            clock = '<div class="clock anim">'
+            clock += '<div class="digit hoursTen" style="animation-delay:-' + (digits[1] * 3600 + dur.minutes() * 60 + dur.seconds()) + 's">' + this.timerDigits(digits[0], 6) + '</div>'
+            clock += '<div class="digit hours" style="animation-delay:-' + (dur.minutes() * 60 + dur.seconds()) + 's">' + this.timerDigits(digits[1], 10) + '</div>'
+            clock += '<div>:</div>'
+            clock += '<div class="digit minsTen" style="animation-delay:-' + (dur.seconds() + digits[3] * 60) + 's">' + this.timerDigits(digits[2], 6) + '</div>'
+            clock += '<div class="digit mins" style="animation-delay:-' + dur.seconds() + 's">' + this.timerDigits(digits[3], 10) + '</div>'
+            clock += '<div>:</div>'
+            clock += '<div class="digit secsTen" style="animation-delay:-' + digits[5] + 's">' + this.timerDigits(digits[4], 6) + '</div>'
+            clock += '<div class="digit secs">' + this.timerDigits(digits[5], 10) + '</div>'
+        } else {
+            clock = '<div class="clock">'
+            clock += '<div class="digit hoursTen">' + digits[0] + '</div>'
+            clock += '<div class="digit hours">' + digits[1] + '</div>'
+            clock += '<div>:</div>'
+            clock += '<div class="digit minsTen">' + digits[2] + '</div>'
+            clock += '<div class="digit mins">' + digits[3] + '</div>'
+            clock += '<div>:</div>'
+            clock += '<div class="digit secsTen">' + digits[4] + '</div>'
+            clock += '<div class="digit secs">' + digits[5] + '</div>'
+        }
 
         document.getElementsByClassName('time')[i].innerHTML = clock
     }
