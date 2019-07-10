@@ -12,7 +12,8 @@ Date.prototype.yyyymmdd = function() {
 let startTime, 
     tabIds = [],
     store = [],
-    index = -1
+    index = -1,
+    curTabId = 0
 
 const day = new Date()
 
@@ -39,6 +40,7 @@ chrome.browserAction.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.status == "complete") {
         if (tab.active) {
+            curTabId = tabId
             if (tab.url.startsWith("https://www.youtube.com")) {
                 if (!tabIds.includes(tabId)) {
                     startTimer(tabId)
@@ -65,6 +67,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 })
 
 chrome.tabs.onActivated.addListener((tab) => {
+    curTabId = tab.tabId
     stopTimer()
     if (tabIds.includes(tab.tabId)) {
         startTimer(tab.tabId)
@@ -73,9 +76,7 @@ chrome.tabs.onActivated.addListener((tab) => {
 
 chrome.tabs.onRemoved.addListener((tabId) => {
     if (tabIds.includes(tabId)) {
-        chrome.tabs.get(tabId, (tab) => {
-            if (tab.active) stopTimer()
-        })
+        if (curTabId == tabId) stopTimer()
         tabIds = tabIds.filter((id) => id != tabId)
     }        
 })
