@@ -46,7 +46,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                 }
             } else {
                 if (tabIds.includes(tabId)) {
-                    stopTimer(tabId)
+                    stopTimer()
+                    tabIds = tabIds.filter((id) => id != tabId)
                 }
             }
         } else {
