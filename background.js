@@ -73,7 +73,9 @@ chrome.tabs.onActivated.addListener((tab) => {
 
 chrome.tabs.onRemoved.addListener((tabId) => {
     if (tabIds.includes(tabId)) {
-        stopTimer()
+        chrome.tabs.get(tabId, (tab) => {
+            if (tab.active) stopTimer()
+        })
         tabIds = tabIds.filter((id) => id != tabId)
     }        
 })
