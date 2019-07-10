@@ -64,16 +64,16 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 })
 
 chrome.tabs.onActivated.addListener((tab) => {
+    stopTimer()
     if (tabIds.includes(tab.tabId)) {
         startTimer(tab.tabId)
-    } else {
-        stopTimer(tab.tabId)
     }
 })
 
 chrome.tabs.onRemoved.addListener((tabId) => {
     if (tabIds.includes(tabId)) {
-        stopTimer(tabId)
+        stopTimer()
+        tabIds = tabIds.filter((id) => id != tabId)
     }        
 })
 
@@ -93,12 +93,11 @@ startTimer = (tabId) => {
 }
 
 
-stopTimer = (tabId) => {
+stopTimer = () => {
     if (startTime) {
         chrome.browserAction.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
         store[index].timer += (new Date().getTime() - startTime.getTime()) / 1000
         startTime = null
-        tabIds = tabIds.filter((id) => id != tabId)
         chrome.storage.sync.set({ store })
     }
 }
