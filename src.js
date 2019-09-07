@@ -74,9 +74,11 @@ class Timer {
     }
 
     showTime(dur, i, timer = false) {
+        const hours = dur.hours() + 24 * dur.days()
+
         let digits = [
-            Math.floor((dur.hours() / 10) % 10),
-            dur.hours() % 10,
+            Math.floor((hours / 10) % 10),
+            hours % 10,
             Math.floor((dur.minutes() / 10) % 10),
             dur.minutes() % 10,
             Math.floor((dur.seconds() / 10) % 10),
