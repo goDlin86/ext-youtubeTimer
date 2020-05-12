@@ -1,11 +1,11 @@
-const { src, dest, parallel } = require('gulp')
-const browserify = require('gulp-browserify')
-const babelify = require('babelify')
-const concat = require('gulp-concat')
-const uglify = require("gulp-uglify")
+import { src, dest, parallel } from 'gulp'
+import browserify from 'gulp-browserify'
+import babelify from 'babelify'
+import concat from 'gulp-concat'
+import uglify from 'gulp-uglify'
 
-function js() {
-  return src('src.js')
+export default () =>
+  src('src.js')
     .pipe(browserify({
       //insertGlobals: true, 
       debug: true,
@@ -16,10 +16,9 @@ function js() {
     }))
     .pipe(concat('main.js'))
     .pipe(dest('.'))
-}
 
-function jsmin() {
-  return src('src.js')
+export const jsmin = () =>
+  src('src.js')
     .pipe(browserify({
       //insertGlobals: true, 
       debug: false,
@@ -31,7 +30,3 @@ function jsmin() {
     .pipe(concat('main.js'))
     .pipe(uglify())
     .pipe(dest('.'))
-}
-
-exports.js = js
-exports.jsmin = jsmin
