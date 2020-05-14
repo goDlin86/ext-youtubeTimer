@@ -1,14 +1,15 @@
-import moment from 'moment'
-import 'moment/locale/ru'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ru'
+import duration from 'dayjs/plugin/duration'
 
-moment.locale('ru')
-
+dayjs.locale('ru')
+dayjs.extend(duration)
 
 class Timer {
     constructor() {
         this.timerEl = document.getElementById('timer')
-        this.today = moment().format("YYYY-MM-DD")
-        this.startWeek = moment().startOf('week')
+        this.today = dayjs().format('YYYY-MM-DD')
+        this.startWeek = dayjs().startOf('week')
         this.currentWeekTime = 0
         this.store = []
 
@@ -35,7 +36,7 @@ class Timer {
     showWeekDays() {
         for (let i = 0; i < 7; i++) {
             const d = this.startWeek.clone().add(i, 'd')
-            this.daysWeek.push(d.format("YYYY-MM-DD"))
+            this.daysWeek.push(d.format('YYYY-MM-DD'))
             this.timerEl.innerHTML += "<div class='day'>" + d.format('dddd') + '<br/>' + d.format('D MMM') + "</div>"
             this.timerEl.innerHTML += "<div class='time'></div>"
         }
@@ -52,7 +53,7 @@ class Timer {
             if (k > -1) {
                 this.currentWeekTime += this.store[k].timer
 
-                const dur = moment.duration(this.store[k].timer, 'seconds')
+                const dur = dayjs.duration(this.store[k].timer, 'seconds')
                 this.showTime(dur, i)
                 
                 //today
@@ -66,7 +67,7 @@ class Timer {
             }
         }
 
-        const dur = moment.duration(this.currentWeekTime, 'seconds')
+        const dur = dayjs.duration(this.currentWeekTime, 'seconds')
         this.showTime(dur, 7)
 
         if (this.startTime && document.getElementsByClassName('today')[0]) 
@@ -137,13 +138,13 @@ class Timer {
     startTimer() {
         const d = this.store.find((obj) => obj.date === this.today)
         const time = d === undefined ? 0 : d.timer
-        const dur = moment.duration(time, 'seconds')
+        const dur = dayjs.duration(time, 'seconds')
 
         this.timerDur = dur.add((new Date().getTime() - this.startTime) / 1000, 's')
-        this.timerI = moment().weekday()
+        this.timerI = dayjs().day() - 1
 
         //time for all week
-        const durWeek = moment.duration(this.currentWeekTime, 'seconds')
+        const durWeek = dayjs.duration(this.currentWeekTime, 'seconds')
         this.timerDurWeek = durWeek.add((new Date().getTime() - this.startTime) / 1000, 's')
 
         this.showTime(this.timerDur, this.timerI, true)
@@ -154,7 +155,7 @@ class Timer {
     changeWeek(d) {
         clearInterval(this.timerInterval)
         this.timerEl.innerHTML = ''
-        this.startWeek.add(d, 'd')
+        this.startWeek = this.startWeek.add(d, 'd')
         this.daysWeek = []
         this.showWeekDays()
         this.showWeekTimes()

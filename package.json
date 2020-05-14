@@ -23,8 +23,7 @@
   },
   "homepage": "https://github.com/goDlin86/ext-youtubeTimer#readme",
   "dependencies": {
-    "dayjs": "^1.8.26",
-    "moment": "^2.25.3"
+    "dayjs": "^1.8.26"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
