@@ -1,4 +1,4 @@
-import { src, dest, parallel } from 'gulp'
+import { src, dest } from 'gulp'
 import browserify from 'gulp-browserify'
 import babelify from 'babelify'
 import concat from 'gulp-concat'

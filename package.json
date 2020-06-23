@@ -23,12 +23,12 @@
   },
   "homepage": "https://github.com/goDlin86/ext-youtubeTimer#readme",
   "dependencies": {
-    "dayjs": "^1.8.26"
+    "dayjs": "^1.8.28"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
-    "@babel/register": "^7.9.0",
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/register": "^7.10.3",
     "babelify": "^10.0.0",
     "gulp": "^4.0.2",
     "gulp-browserify": "^0.5.1",
