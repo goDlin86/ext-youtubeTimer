@@ -141,7 +141,7 @@ class Timer {
         const dur = dayjs.duration(time, 'seconds')
 
         this.timerDur = dur.add((new Date().getTime() - this.startTime) / 1000, 's')
-        this.timerI = dayjs().day() - 1
+        this.timerI = dayjs().day() === 0 ? 6 : dayjs().day() - 1
 
         //time for all week
         const durWeek = dayjs.duration(this.currentWeekTime, 'seconds')
