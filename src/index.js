@@ -125,14 +125,14 @@ class Timer {
     }
 
     connect() {
-        const port = chrome.extension.connect({ name: "start time" })
-        port.postMessage("give me start time")
-        port.onMessage.addListener((msg) => {
-            if (msg) {
-                this.startTime = msg
-                this.startTimer()
-            }
-        })
+        // const port = chrome.extension.connect({ name: "start time" })
+        // port.postMessage("give me start time")
+        // port.onMessage.addListener((msg) => {
+        //     if (msg) {
+        //         this.startTime = msg
+        //         this.startTimer()
+        //     }
+        // })
     }
 
     startTimer() {

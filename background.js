@@ -9,99 +9,104 @@ Date.prototype.yyyymmdd = function() {
 }
 
 
-let startTime, 
-    tabIds = [],
-    store = [],
-    index = -1,
-    curTabId = 0
 
-const day = new Date()
-
-//chrome.storage.sync.clear()
-chrome.storage.sync.get('store', (data) => {
-    if (!chrome.runtime.error && data.store) {
-        store = data.store
-    }
-
-    index = store.findIndex(obj => obj.date === day.yyyymmdd())
-    if (index === -1) {
-        store.push({ timer: 0, date: day.yyyymmdd() })
-        index = store.length - 1
-
-        chrome.storage.sync.set({ store })
-    }
-})
-
-chrome.browserAction.setBadgeText({ text: " " })
-chrome.browserAction.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
-
+chrome.action.setBadgeText({ text: ' ' })
+//chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
 
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status == "complete") {
-        if (tab.active) {
-            curTabId = tabId
-            if (tab.url.startsWith("https://www.youtube.com")) {
-                if (!tabIds.includes(tabId)) {
-                    startTimer(tabId)
-                    tabIds.push(tabId)
+    if (changeInfo.status == 'complete') {
+        chrome.storage.local.get(['tabIds'], ({ tabIds }) => {
+            if (tab.active) {
+                chrome.storage.local.set({ 'curTabId': tabId })
+                if (tab.url.startsWith('https://www.youtube.com')) {
+                    if (!tabIds.includes(tabId)) {
+                        startTimer()
+                        tabIds.push(tabId)
+                        chrome.storage.local.set({ tabIds })
+                    }
+                } else {
+                    if (tabIds.includes(tabId)) {
+                        stopTimer()
+                        tabIds = tabIds.filter((id) => id != tabId)
+                        chrome.storage.local.set({ tabIds })
+                    }
                 }
             } else {
-                if (tabIds.includes(tabId)) {
-                    stopTimer()
-                    tabIds = tabIds.filter((id) => id != tabId)
+                if (tab.url.startsWith('https://www.youtube.com')) {
+                    if (!tabIds.includes(tabId)) {
+                        tabIds.push(tabId)
+                        chrome.storage.local.set({ tabIds })
+                    }
+                } else {
+                    if (tabIds.includes(tabId)) {
+                        tabIds.filter((id) => id != tabId)
+                        chrome.storage.local.set({ tabIds })
+                    }
                 }
             }
-        } else {
-            if (tab.url.startsWith("https://www.youtube.com")) {
-                if (!tabIds.includes(tabId)) {
-                    tabIds.push(tabId)
-                }
-            } else {
-                if (tabIds.includes(tabId)) {
-                    tabIds.filter((id) => id != tabId)
-                }
-            }
-        }
+        })
     }
 })
 
-chrome.tabs.onActivated.addListener((tab) => {
-    curTabId = tab.tabId
+chrome.tabs.onActivated.addListener((tab) => {   
+    chrome.storage.local.set({ 'curTabId': tab.tabId })
     stopTimer()
-    if (tabIds.includes(tab.tabId)) {
-        startTimer(tab.tabId)
-    }
-})
-
-chrome.tabs.onRemoved.addListener((tabId) => {
-    if (tabIds.includes(tabId)) {
-        if (curTabId == tabId) stopTimer()
-        tabIds = tabIds.filter((id) => id != tabId)
-    }        
-})
-
-
-chrome.extension.onConnect.addListener((port) => {
-    port.onMessage.addListener((msg) => {
-        port.postMessage((startTime) ? startTime.getTime() : null)
+    chrome.storage.local.get(['tabIds'], ({ tabIds }) => {
+        if (tabIds.includes(tab.tabId)) {
+            startTimer()
+        }
     })
 })
 
+chrome.tabs.onRemoved.addListener((tabId) => {
+    chrome.storage.local.get(['tabIds'], ({ tabIds }) => {
+        if (tabIds.includes(tabId)) {
+            chrome.storage.local.get(['curTabId'], ({ curTabId }) => {
+                if (curTabId == tabId) stopTimer()
+            })
+            tabIds = tabIds.filter((id) => id != tabId)
+            chrome.storage.local.set({ tabIds })
+        }
+    })
+
+})
+
+
+// // chrome.extension.onConnect.addListener((port) => {
+// //     port.onMessage.addListener((msg) => {
+// //         port.postMessage((startTime) ? startTime.getTime() : null)
+// //     })
+// // })
 
 
 
-startTimer = (tabId) => {
-    chrome.browserAction.setBadgeBackgroundColor({ color: [230, 10, 10, 230] })
-    startTime = new Date()    
+
+startTimer = () => {
+    chrome.action.setBadgeBackgroundColor({ color: [230, 10, 10, 230] })
+    chrome.storage.local.set({ 'startTime': new Date().getTime() })    
 }
-
 
 stopTimer = () => {
-    if (startTime) {
-        chrome.browserAction.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
-        store[index].timer += (new Date().getTime() - startTime.getTime()) / 1000
-        startTime = null
-        chrome.storage.sync.set({ store })
-    }
+    chrome.storage.local.get(['startTime'], ({ startTime }) => {
+        if (startTime) {
+            chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
+            chrome.storage.sync.get(['store'], ({ store }) => {
+                let index = store.findIndex(obj => obj.date === new Date().yyyymmdd())
+                if (index === -1) {
+                    store.push({ timer: 0, date: new Date().yyyymmdd() })
+                    index = store.length - 1  
+                }
+                store[index].timer += (new Date().getTime() - startTime) / 1000
+                chrome.storage.local.set({ 'startTime': null })
+                //chrome.storage.sync.set({ store })
+            })
+        }
+    })
 }
+
+
+chrome.windows.onRemoved.addListener((windowId) => {
+    stopTimer()
+    chrome.storage.local.set({ 'tabIds': [] })
+})
