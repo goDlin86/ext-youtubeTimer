@@ -16,13 +16,9 @@ class Timer {
         this.daysWeek = []
         this.showWeekDays()
 
-        chrome.storage.sync.get('store', (data) => {
-            if (!chrome.runtime.error && data.store) {
-                this.store = data.store
-            }
-        
+        chrome.storage.sync.get(['store'], ({ store }) => {
+            this.store = store  
             this.showWeekTimes()
-            this.connect()
         })
 
         document.getElementsByClassName('prev')[0].addEventListener('click', (e) => {
@@ -70,8 +66,11 @@ class Timer {
         const dur = dayjs.duration(this.currentWeekTime, 'seconds')
         this.showTime(dur, 7)
 
-        if (this.startTime && document.getElementsByClassName('today')[0]) 
-            this.startTimer()
+        chrome.storage.local.get(['startTime'], ({ startTime }) => {
+            if (startTime && document.getElementsByClassName('today')[0]) {
+                this.startTimer(startTime)
+            }
+        })
     }
 
     showTime(dur, i, timer = false) {
@@ -124,36 +123,23 @@ class Timer {
         return digits
     }
 
-    connect() {
-        // const port = chrome.extension.connect({ name: "start time" })
-        // port.postMessage("give me start time")
-        // port.onMessage.addListener((msg) => {
-        //     if (msg) {
-        //         this.startTime = msg
-        //         this.startTimer()
-        //     }
-        // })
-    }
-
-    startTimer() {
+    startTimer(startTime) {
         const d = this.store.find((obj) => obj.date === this.today)
         const time = d === undefined ? 0 : d.timer
         const dur = dayjs.duration(time, 'seconds')
 
-        this.timerDur = dur.add((new Date().getTime() - this.startTime) / 1000, 's')
+        this.timerDur = dur.add((new Date().getTime() - startTime) / 1000, 's')
         this.timerI = dayjs().day() == 0 ? 6 : dayjs().day() - 1
 
         //time for all week
         const durWeek = dayjs.duration(this.currentWeekTime, 'seconds')
-        this.timerDurWeek = durWeek.add((new Date().getTime() - this.startTime) / 1000, 's')
+        this.timerDurWeek = durWeek.add((new Date().getTime() - startTime) / 1000, 's')
 
         this.showTime(this.timerDur, this.timerI, true)
         this.showTime(this.timerDurWeek, 7, true)
-        //this.timerInterval = setInterval(this.showTime.bind(this, this.timerDur, this.timerI, true), 1000)
     }
 
     changeWeek(d) {
-        clearInterval(this.timerInterval)
         this.timerEl.innerHTML = ''
         this.startWeek = this.startWeek.add(d, 'd')
         this.daysWeek = []

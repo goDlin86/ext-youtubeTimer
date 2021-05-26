@@ -13,36 +13,27 @@ Date.prototype.yyyymmdd = function() {
 chrome.action.setBadgeText({ text: ' ' })
 //chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
 
+const getCurrentTab = async () => {
+    let queryOptions = { active: true, currentWindow: true }
+    let [tab] = await chrome.tabs.query(queryOptions)
+    return tab
+}
+
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.status == 'complete') {
         chrome.storage.local.get(['tabIds'], ({ tabIds }) => {
-            if (tab.active) {
-                chrome.storage.local.set({ 'curTabId': tabId })
-                if (tab.url.startsWith('https://www.youtube.com')) {
-                    if (!tabIds.includes(tabId)) {
-                        startTimer()
-                        tabIds.push(tabId)
-                        chrome.storage.local.set({ tabIds })
-                    }
-                } else {
-                    if (tabIds.includes(tabId)) {
-                        stopTimer()
-                        tabIds = tabIds.filter((id) => id != tabId)
-                        chrome.storage.local.set({ tabIds })
-                    }
+            if (tab.url.startsWith('https://www.youtube.com')) {
+                if (!tabIds.includes(tabId)) {
+                    tabIds.push(tabId)
+                    chrome.storage.local.set({ tabIds })
+                    if (tab.active) startTimer()
                 }
             } else {
-                if (tab.url.startsWith('https://www.youtube.com')) {
-                    if (!tabIds.includes(tabId)) {
-                        tabIds.push(tabId)
-                        chrome.storage.local.set({ tabIds })
-                    }
-                } else {
-                    if (tabIds.includes(tabId)) {
-                        tabIds.filter((id) => id != tabId)
-                        chrome.storage.local.set({ tabIds })
-                    }
+                if (tabIds.includes(tabId)) {
+                    tabIds = tabIds.filter(id => id != tabId)
+                    chrome.storage.local.set({ tabIds })
+                    if (tab.active) stopTimer()
                 }
             }
         })
@@ -50,22 +41,18 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 })
 
 chrome.tabs.onActivated.addListener((tab) => {   
-    chrome.storage.local.set({ 'curTabId': tab.tabId })
-    stopTimer()
-    chrome.storage.local.get(['tabIds'], ({ tabIds }) => {
-        if (tabIds.includes(tab.tabId)) {
-            startTimer()
-        }
+    chrome.storage.local.get(['tabIds', 'startTime'], ({ tabIds, startTime }) => {
+        if (startTime && !tabIds.includes(tab.tabId)) stopTimer()
+        if (!startTime && tabIds.includes(tab.tabId)) startTimer()
     })
 })
 
 chrome.tabs.onRemoved.addListener((tabId) => {
-    chrome.storage.local.get(['tabIds'], ({ tabIds }) => {
+    chrome.storage.local.get(['tabIds'], async ({ tabIds }) => {
         if (tabIds.includes(tabId)) {
-            chrome.storage.local.get(['curTabId'], ({ curTabId }) => {
-                if (curTabId == tabId) stopTimer()
-            })
-            tabIds = tabIds.filter((id) => id != tabId)
+            const curTab = await getCurrentTab()
+            if (curTab.id == tabId) stopTimer()
+            tabIds = tabIds.filter(id => id != tabId)
             chrome.storage.local.set({ tabIds })
         }
     })
@@ -73,21 +60,12 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 })
 
 
-// // chrome.extension.onConnect.addListener((port) => {
-// //     port.onMessage.addListener((msg) => {
-// //         port.postMessage((startTime) ? startTime.getTime() : null)
-// //     })
-// // })
-
-
-
-
-startTimer = () => {
+const startTimer = () => {
     chrome.action.setBadgeBackgroundColor({ color: [230, 10, 10, 230] })
     chrome.storage.local.set({ 'startTime': new Date().getTime() })    
 }
 
-stopTimer = () => {
+const stopTimer = () => {
     chrome.storage.local.get(['startTime'], ({ startTime }) => {
         if (startTime) {
             chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
@@ -99,7 +77,7 @@ stopTimer = () => {
                 }
                 store[index].timer += (new Date().getTime() - startTime) / 1000
                 chrome.storage.local.set({ 'startTime': null })
-                //chrome.storage.sync.set({ store })
+                chrome.storage.sync.set({ store })
             })
         }
     })
