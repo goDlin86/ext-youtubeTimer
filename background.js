@@ -8,17 +8,18 @@ Date.prototype.yyyymmdd = function() {
            ].join('-')
 }
 
-
-
-chrome.action.setBadgeText({ text: ' ' })
-//chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
-
 const getCurrentTab = async () => {
     let queryOptions = { active: true, currentWindow: true }
     let [tab] = await chrome.tabs.query(queryOptions)
     return tab
 }
 
+chrome.windows.onCreated.addListener((window) => {
+    chrome.storage.local.set({ 'startTime': null })
+    chrome.storage.local.set({ 'tabIds': [] })
+    chrome.action.setBadgeText({ text: ' ' })
+    chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
+})
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.status == 'complete') {

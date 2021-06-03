@@ -148,5 +148,4 @@ class Timer {
     }
 }
 
-
 const timer = new Timer()
