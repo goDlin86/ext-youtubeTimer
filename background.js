@@ -31,10 +31,11 @@ chrome.tabs.onActivated.addListener(activeInfo => {
 
 const timer = (url) => {
     chrome.storage.local.get(['startTime'], ({ startTime }) => {
-        if (url.startsWith('https://www.youtube.com')) 
+        if (url.startsWith('https://www.youtube.com')) {
             if (!startTime) startTimer()
-        else
+        } else {
             if (startTime) stopTimer(startTime)
+        }
     })
 }
 
