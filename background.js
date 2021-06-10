@@ -17,58 +17,47 @@ chrome.windows.onCreated.addListener(window => {
 })
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status == 'complete') {
-        if (tab.active) {
-            if (tab.url.startsWith('https://www.youtube.com')) {
-                startTimer()
-            } else {
-                stopTimer()
-            }
-        }
-    }
+    if (tab.active && changeInfo.status == 'complete') 
+        timer(tab.url)
 })
 
 chrome.tabs.onActivated.addListener(activeInfo => {
     setTimeout(() => {
         chrome.tabs.get(activeInfo.tabId, tab => {
-            if (tab.url.startsWith('https://www.youtube.com')) {
-                startTimer()
-            } else {
-                stopTimer()
-            }
+            timer(tab.url)
         })
     }, 500)
 })
 
+const timer = (url) => {
+    chrome.storage.local.get(['startTime'], ({ startTime }) => {
+        if (url.startsWith('https://www.youtube.com')) 
+            if (!startTime) startTimer()
+        else
+            if (startTime) stopTimer(startTime)
+    })
+}
 
 const startTimer = () => {
-    chrome.storage.local.get(['startTime'], ({ startTime }) => {
-        if (!startTime) {
-            chrome.action.setBadgeBackgroundColor({ color: [230, 10, 10, 230] })
-            chrome.storage.local.set({ 'startTime': new Date().getTime() })
-        }
-    })
+    chrome.action.setBadgeBackgroundColor({ color: [230, 10, 10, 230] })
+    chrome.storage.local.set({ 'startTime': new Date().getTime() })
 }
 
-const stopTimer = () => {
-    chrome.storage.local.get(['startTime'], ({ startTime }) => {
-        if (startTime) {
-            chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
-            chrome.storage.sync.get(['store'], ({ store }) => {
-                let index = store.findIndex(obj => obj.date === new Date().yyyymmdd())
-                if (index === -1) {
-                    store.push({ timer: 0, date: new Date().yyyymmdd() })
-                    index = store.length - 1  
-                }
-                store[index].timer += (new Date().getTime() - startTime) / 1000
-                chrome.storage.local.set({ 'startTime': null })
-                chrome.storage.sync.set({ store })
-            })
+const stopTimer = (startTime) => {
+    chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
+    chrome.storage.sync.get(['store'], ({ store }) => {
+        let index = store.findIndex(obj => obj.date === new Date().yyyymmdd())
+        if (index === -1) {
+            store.push({ timer: 0, date: new Date().yyyymmdd() })
+            index = store.length - 1  
         }
+        store[index].timer += (new Date().getTime() - startTime) / 1000
+        chrome.storage.local.set({ 'startTime': null })
+        chrome.storage.sync.set({ store })
     })
 }
 
 
-chrome.windows.onRemoved.addListener((windowId) => {
+chrome.windows.onRemoved.addListener(windowId => {
     stopTimer()
 })
