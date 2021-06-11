@@ -60,5 +60,7 @@ const stopTimer = (startTime) => {
 
 
 chrome.windows.onRemoved.addListener(windowId => {
-    stopTimer()
+    chrome.storage.local.get(['startTime'], ({ startTime }) => {
+        if (startTime) stopTimer(startTime)
+    })
 })
