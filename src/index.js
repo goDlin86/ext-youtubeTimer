@@ -16,7 +16,7 @@ class Timer {
         this.daysWeek = []
         this.showWeekDays()
 
-        chrome.storage.sync.get(['store'], ({ store }) => {
+        chrome.storage.local.get(['store'], ({ store }) => {
             this.store = store  
             this.showWeekTimes()
         })

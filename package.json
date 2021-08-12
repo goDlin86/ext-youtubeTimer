@@ -3,8 +3,7 @@
   "version": "1.5.0",
   "description": "Youtube timer",
   "scripts": {
-    "serve": "webpack serve --mode development",
-    "build": "webpack --mode production"
+    "build": "parcel build ./src/index.html --public-url ./"
   },
   "repository": {
     "type": "git",
@@ -22,18 +21,11 @@
     "url": "https://github.com/goDlin86/ext-youtubeTimer/issues"
   },
   "homepage": "https://github.com/goDlin86/ext-youtubeTimer#readme",
+  "browserslist": "> 0.2%",
   "dependencies": {
     "dayjs": "^1.9.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/plugin-transform-runtime": "^7.14.3",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/register": "^7.12.1",
-    "babel-loader": "^8.2.2",
-    "html-webpack-plugin": "^5.3.1",
-    "webpack": "^5.23.0",
-    "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^3.11.2"
+    "parcel": "next"
   }
 }

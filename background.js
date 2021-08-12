@@ -22,11 +22,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 })
 
 chrome.tabs.onActivated.addListener(activeInfo => {
-    setTimeout(() => {
-        chrome.tabs.get(activeInfo.tabId, tab => {
-            timer(tab.url)
-        })
-    }, 500)
+    chrome.tabs.get(activeInfo.tabId, tab => {
+        timer(tab.url)
+    })
 })
 
 const timer = (url) => {
@@ -46,15 +44,20 @@ const startTimer = () => {
 
 const stopTimer = (startTime) => {
     chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
-    chrome.storage.sync.get(['store'], ({ store }) => {
-        let index = store.findIndex(obj => obj.date === new Date().yyyymmdd())
+    chrome.storage.local.get(['store'], ({ store }) => {
+        let index = -1
+        if (store) {
+            index = store.findIndex(obj => obj.date === new Date().yyyymmdd())
+        } else {
+            store = []
+        }
         if (index === -1) {
             store.push({ timer: 0, date: new Date().yyyymmdd() })
             index = store.length - 1  
         }
         store[index].timer += (new Date().getTime() - startTime) / 1000
         chrome.storage.local.set({ 'startTime': null })
-        chrome.storage.sync.set({ store })
+        chrome.storage.local.set({ store })
     })
 }
 
