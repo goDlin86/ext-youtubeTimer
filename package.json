@@ -21,7 +21,6 @@
     "url": "https://github.com/goDlin86/ext-youtubeTimer/issues"
   },
   "homepage": "https://github.com/goDlin86/ext-youtubeTimer#readme",
-  "browserslist": "> 0.2%",
   "dependencies": {
     "dayjs": "^1.9.5"
   },
