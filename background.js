@@ -9,11 +9,9 @@ Date.prototype.yyyymmdd = function() {
 }
 
 
-chrome.action.setBadgeText({ text: ' ' })
-
 chrome.windows.onCreated.addListener(window => {
     chrome.storage.local.set({ 'startTime': null })
-    chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
+    chrome.action.setIcon({ path: 'icons/iconwhite16.png' })
 })
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -38,12 +36,12 @@ const timer = (url) => {
 }
 
 const startTimer = () => {
-    chrome.action.setBadgeBackgroundColor({ color: [230, 10, 10, 230] })
+    chrome.action.setIcon({ path: 'icons/icon16.png' })
     chrome.storage.local.set({ 'startTime': new Date().getTime() })
 }
 
 const stopTimer = (startTime) => {
-    chrome.action.setBadgeBackgroundColor({ color: [230, 230, 230, 230] })
+    chrome.action.setIcon({ path: 'icons/iconwhite16.png' })
     chrome.storage.local.get(['store'], ({ store }) => {
         let index = -1
         if (store) {

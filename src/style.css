@@ -18,7 +18,7 @@ body {
     padding: 10px;
 }
 #timer > .day {
-    color: rgb(255 79 112 / 55%);
+    color: rgb(250 131 149 / 50%);
 }
 #timer > .day.today, #timer > .time.today {
     background-color: #3e2d2d;
