@@ -25,6 +25,6 @@
     "dayjs": "^1.9.5"
   },
   "devDependencies": {
-    "parcel": "next"
+    "parcel": "^2.0.0"
   }
 }
