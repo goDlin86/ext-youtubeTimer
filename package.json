@@ -3,6 +3,7 @@
   "version": "1.5.0",
   "description": "Youtube timer",
   "scripts": {
+    "clean": "rm -rf dist/",
     "build": "parcel build ./src/index.html --public-url ./"
   },
   "repository": {
