@@ -18,10 +18,10 @@ body {
     padding: 10px;
 }
 #timer > .day {
-    color: rgb(250 131 149 / 50%);
+    color: rgb(250 131 149 / 35%);
 }
 #timer > .day.today, #timer > .time.today {
-    background-color: #3e2d2d;
+    background-color: rgb(0 0 0 / 15%);
 }
 #timer > .allday {
     color: #ff8295;
@@ -56,7 +56,7 @@ body {
 .clock {
     position: relative;
     display: grid;
-    grid-template-columns: 24px 24px 8px 24px 24px 8px 24px 24px;
+    grid-template-columns: 24px 24px 12px 24px 24px 12px 24px 24px;
     text-align: center;
     overflow: hidden;
     height: 35px;
