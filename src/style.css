@@ -3,7 +3,6 @@ body {
     font-size: 1em;
     color: #ff4f70;
     margin: 20px;
-    width: 300px;
     background-color: #292929;
     font-weight: bold;
 }
@@ -19,8 +18,8 @@ body {
 
 #timer {
     display: grid;
-    grid-template-columns: 120px 1fr;
-    
+    grid-template-columns: 1fr 1fr;
+    width: 335px;
 }
 #timer > div {
     padding: 10px;
