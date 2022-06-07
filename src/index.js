@@ -33,12 +33,10 @@ class Timer {
         for (let i = 0; i < 7; i++) {
             const d = this.startWeek.clone().add(i, 'd')
             this.daysWeek.push(d.format('YYYY-MM-DD'))
-            this.timerEl.innerHTML += "<div class='day'>" + d.format('dddd') + '<br/>' + d.format('D MMM') + "</div>"
-            this.timerEl.innerHTML += "<div class='time'></div>"
+            this.timerEl.innerHTML += "<div class='day'><div>" + d.format('dddd') + '<br/>' + d.format('D MMM') + "</div><div class='time' /></div>"
         }
 
-        this.timerEl.innerHTML += "<div class='allday'>Всего</div>"
-        this.timerEl.innerHTML += "<div class='time'></div>"
+        this.timerEl.innerHTML += "<div class='day'><div class='allday'>Всего</div><div class='time' /></div>"
     }
 
     showWeekTimes() {
@@ -55,11 +53,11 @@ class Timer {
                 //today
                 if (this.today === this.store[k].date) {
                     document.getElementsByClassName('day')[i].classList.add('today')
-                    document.getElementsByClassName('time')[i].classList.add('today')
+                    //document.getElementsByClassName('time')[i].classList.add('today')
                 }
             } else if (this.today === this.daysWeek[i]) {
                 document.getElementsByClassName('day')[i].classList.add('today')
-                document.getElementsByClassName('time')[i].classList.add('today')
+                //document.getElementsByClassName('time')[i].classList.add('today')
             }
         }
 
