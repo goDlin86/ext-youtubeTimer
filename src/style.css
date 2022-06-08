@@ -7,13 +7,19 @@ body {
     font-weight: bold;
 }
 .header {
-    color: #f93636;
+    color: white;
+    background-color: #f93636;
+    border-radius: 10px;
+    padding: 5px;
     display: flex;
     justify-content: center;
+    align-items: center;
+    max-width: 170px;
+    margin: 0 auto;
 }
 .header span {
     padding-left: 15px;
-    font-size: 40px;
+    font-size: 2.2em;
 }
 
 
