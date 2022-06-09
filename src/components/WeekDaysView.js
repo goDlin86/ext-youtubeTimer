@@ -29,12 +29,12 @@ const WeekDaysView = ({ day, store, startTime }) => {
                                 <br/>
                                 {d.format('D MMM')}
                             </div>
-                            {dur > 0 && <TimeView duration={dur} startTime={today === d.format('YYYY-MM-DD') ? startTime : null} />}
+                            <TimeView duration={dur} startTime={today === d.format('YYYY-MM-DD') ? startTime : null} />
                         </div>
                         {i === 6 && 
                             <div className='day'>
                                 <div className='allday'>Всего</div>
-                                {currentWeekTime > 0 && <TimeView duration={currentWeekTime} startTime={startTime} />}
+                                <TimeView duration={currentWeekTime} startTime={startWeek.format('YYYY-MM-DD') === dayjs().startOf('week').format('YYYY-MM-DD') ? startTime : null} />
                             </div>
                         }
                     </>

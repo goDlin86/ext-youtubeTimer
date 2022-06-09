@@ -7,7 +7,8 @@ dayjs.locale('ru')
 dayjs.extend(duration)
 
 const TimeView = ({ duration, startTime }) => {
-    const dur = dayjs.duration(duration + (startTime ? (new Date().getTime() - startTime) / 1000 : 0), 'seconds')
+    const allduration = duration + (startTime ? (new Date().getTime() - startTime) / 1000 : 0)
+    const dur = dayjs.duration(allduration, 'seconds')
     const hours = dur.hours() + 24 * dur.days()
 
     const digits = [
@@ -19,8 +20,6 @@ const TimeView = ({ duration, startTime }) => {
         dur.seconds() % 10
     ]
 
-    console.log(startTime)
-
     const timerDigits = (first, count) => {
         return [...Array(count).keys()].map((i) => {
             let digit = i + first
@@ -31,6 +30,7 @@ const TimeView = ({ duration, startTime }) => {
 
     return (
         <div className='time'>
+            {allduration > 0 &&
             <div className={startTime ? 'clock anim' : 'clock'}>
                 <div className='digit hoursTen' style={startTime ? {animationDelay: -(digits[1] * 3600 + dur.minutes() * 60 + dur.seconds()) + 's'} : {}}>
                     {startTime ? timerDigits(digits[0], 6) : digits[0]}
@@ -53,6 +53,7 @@ const TimeView = ({ duration, startTime }) => {
                     {startTime ? timerDigits(digits[5], 10) : digits[5]}
                 </div>
             </div>
+            }
         </div>
     )
 }
