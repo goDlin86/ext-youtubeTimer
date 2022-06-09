@@ -5,6 +5,7 @@ body {
     margin: 20px;
     background-color: #0c0c0e;
     font-weight: bold;
+    width: 335px;
 }
 .header {
     color: white;
@@ -26,7 +27,6 @@ body {
 .day {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    width: 335px;
     border-radius: 10px;
 }
 .day > div {
@@ -99,4 +99,30 @@ body {
 @keyframes timer {
     from { top: 0; }
     to { top: -350px; }
+}
+
+
+.carousel-swap-leave, .carousel-swap-left-leave {
+    transition: transform .5s ease-in-out;
+    transform: translate(0, 0);
+}
+.carousel-swap-leave-active {
+    transform: translate(-100%, 0);
+}
+.carousel-swap-left-leave-active {
+    transform: translate(100%, 0);
+}
+.carousel-swap-enter {
+    transition: transform .5s ease-in-out;
+    transform: translate(100%, 0);
+}
+.carousel-swap-left-enter {
+    transition: transform .5s ease-in-out;
+    transform: translate(-100%, 0);
+}
+.carousel-swap-enter-active, .carousel-swap-left-enter-active {
+    transform: translate(0, 0);
+}
+.carousel-swap-height, .carousel-swap-left-height {
+    transition: height .5s ease-in-out;
 }

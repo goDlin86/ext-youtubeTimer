@@ -10,7 +10,7 @@ const WeekDaysView = ({ day, store, startTime }) => {
     let currentWeekTime = 0
 
     return (
-        <>
+        <div>
             {[...Array(7).keys()].map((i) => {
                 const d = startWeek.add(i, 'day')
                 const k = store.findIndex(obj => obj.date === d.format('YYYY-MM-DD'))
@@ -40,7 +40,7 @@ const WeekDaysView = ({ day, store, startTime }) => {
                     </>
                 )
             })}
-        </>
+        </div>
     )
 }
 

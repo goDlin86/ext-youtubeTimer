@@ -25,6 +25,7 @@
   "dependencies": {
     "dayjs": "^1.9.5",
     "react": "^18.1.0",
+    "react-css-transition-replace": "^4.0.5",
     "react-dom": "^18.1.0"
   },
   "devDependencies": {
