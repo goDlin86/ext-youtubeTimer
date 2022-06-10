@@ -39,7 +39,9 @@ body {
 .day > .allday, .time {
     font-size: 1.9em;
 }
-
+.time {
+    letter-spacing: 3px;
+}
 
 
 #buttons {
@@ -58,47 +60,6 @@ body {
 .prev:hover, .next:hover {
     color: white;
     background-color: #f93636;
-}
-
-
-
-.clock {
-    position: relative;
-    display: grid;
-    grid-template-columns: 24px 24px 12px 24px 24px 12px 24px 24px;
-    text-align: center;
-    overflow: hidden;
-    height: 35px;
-}
-.clock > .digit {
-    position: relative;
-    display: grid;
-    grid-template-columns: 1fr;
-}
-
-.clock.anim > .secs {
-    animation: timer infinite 10s steps(10);
-}
-.clock.anim > .secsTen {
-    animation: timer infinite 60s steps(6);
-}
-.clock.anim > .mins {
-    animation: timer infinite 600s steps(10);
-}
-.clock.anim > .minsTen {
-    animation: timer infinite 3600s steps(6);
-}
-.clock.anim > .hours {
-    animation: timer infinite 36000s steps(10);
-}
-.clock.anim > .hoursTen {
-    animation: timer infinite 216000s steps(6);
-}
-
-
-@keyframes timer {
-    from { top: 0; }
-    to { top: -350px; }
 }
 
 
