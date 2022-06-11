@@ -17,7 +17,7 @@ const TimeView = ({ duration, startTime }) => {
         setTime(dur)
         if (startTime) {
             const timer = setInterval(() => {
-                setTime((prevTime) => prevTime.add(1, 's'))
+                setTime(t => t.add(1, 's'))
             }, 1000)
         
             return () => clearInterval(timer)
@@ -26,7 +26,7 @@ const TimeView = ({ duration, startTime }) => {
 
     return (
         <div className='time'>
-            {allduration > 0 && <div>{time.format('HH:mm:ss')}</div>}
+            {allduration > 0 && <div>{(hours < 10 ? '0' + hours : hours) + time.format(':mm:ss')}</div>}
         </div>
     )
 }
