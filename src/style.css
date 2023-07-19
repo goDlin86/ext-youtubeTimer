@@ -62,29 +62,3 @@ body {
     color: white;
     background-color: #f93636;
 }
-
-
-.carousel-swap-leave, .carousel-swap-left-leave {
-    transition: transform .5s ease-in-out;
-    transform: translate(0, 0);
-}
-.carousel-swap-leave-active {
-    transform: translate(-100%, 0);
-}
-.carousel-swap-left-leave-active {
-    transform: translate(100%, 0);
-}
-.carousel-swap-enter {
-    transition: transform .5s ease-in-out;
-    transform: translate(100%, 0);
-}
-.carousel-swap-left-enter {
-    transition: transform .5s ease-in-out;
-    transform: translate(-100%, 0);
-}
-.carousel-swap-enter-active, .carousel-swap-left-enter-active {
-    transform: translate(0, 0);
-}
-.carousel-swap-height, .carousel-swap-left-height {
-    transition: height .5s ease-in-out;
-}
